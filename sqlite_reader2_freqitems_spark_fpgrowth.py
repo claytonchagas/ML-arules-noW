@@ -1,5 +1,5 @@
 import sqlite3
-import pandas as pd
+# import pandas as pd
 
 from pyspark.ml.fpm import FPGrowth
 from pyspark.sql import SparkSession
@@ -26,18 +26,34 @@ if __name__ == "__main__":
 
     result = cursor.fetchall()
 
+    cursor.execute("""select count(trial.id) from trial""")
+
+    counter = cursor.fetchall()
+
+    print("Tupla: ", counter)
+
+    counterIntList = []
+
+    # counterInt = [int(c[0]) for c in counter]
+
+    for n in counter:
+        counterIntList.append(n[0])
+        print("Tupla2List: ", counterIntList)
+        counterInt = counterIntList[-1]
+        print("List2int: ", counterInt)
+
     conn.close()
 
     dataset = []
 
     print(result)
 
-    for count in result:
-        counter = count[0]
+    # for count in result:
+    #     counter = count[0]
+    #
+    # print(counter)
 
-    print(counter)
-
-    for i in range(counter):
+    for i in range(counterInt):
         dataset.append((i,[]))
 
     for linha in result:
@@ -51,10 +67,10 @@ if __name__ == "__main__":
 
     for i in range(10,100):
         dataset.append((i, ['a','b','c']))
-        counter+=1
+        counterInt+=1
 
     print(dataset)
-    for m in range(counter):
+    for m in range(counterInt):
         print(len(dataset[m]))
         print(dataset[m])
 
@@ -86,7 +102,7 @@ if __name__ == "__main__":
     model = fpGrowth.fit(df)
     model.freqItemsets.show()
     model.associationRules.show()
-    # model.transform(df).show()
+    model.transform(df).show()
 
     # apriori(df, min_support=0.9)
 
