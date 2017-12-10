@@ -18,7 +18,8 @@ if __name__ == "__main__":
         .appName("FPGrowthExample") \
         .getOrCreate()
 
-    conn = sqlite3.connect('/home/clayton/Documentos/input/exec_mineracao/.noworkflow/db.sqlite')
+    # conn = sqlite3.connect('/home/clayton/Documentos/input/exec_mineracao/.noworkflow/db.sqlite')
+    conn = sqlite3.connect('/home/clayton/Documentos/input/scriptsall/.noworkflow/db.sqlite')
     cursor = conn.cursor()
 
     cursor.execute("""select trial.id as trial_id, module.name as module_name from trial inner join dependency on 
@@ -46,7 +47,7 @@ if __name__ == "__main__":
 
     dataset = []
 
-    print(result)
+    # print(result)
 
     # for count in result:
     #     counter = count[0]
@@ -65,13 +66,13 @@ if __name__ == "__main__":
     #         if linha[0] == m+1:
     #             dataset[m].append(linha[1])
 
-    for i in range(10,100):
-        dataset.append((i, ['a','b','c']))
-        counterInt+=1
+    # for i in range(10,100):
+    #     dataset.append((i, ['a','b','c']))
+    #     counterInt+=1
 
     print(dataset)
     for m in range(counterInt):
-        print(len(dataset[m]))
+        print(len(dataset[m][1]))
         print(dataset[m])
 
     df = spark.createDataFrame(dataset, ["id", "items"])
@@ -97,12 +98,13 @@ if __name__ == "__main__":
     # print(df)
     # df.to_csv('example.csv')
 
-    fpGrowth = FPGrowth(itemsCol="items", minSupport=0.5, minConfidence=0.5)
+    fpGrowth = FPGrowth(itemsCol="items", minSupport=0.822, minConfidence=0.5)
 
     model = fpGrowth.fit(df)
-    model.freqItemsets.show()
-    model.associationRules.show()
-    model.transform(df).show()
+    # show(x, y) -> x=
+    model.freqItemsets.show(400000, 110)
+    # model.associationRules.show()
+    # model.transform(df).show()
 
     # apriori(df, min_support=0.9)
 

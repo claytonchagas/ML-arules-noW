@@ -9,7 +9,8 @@ from timeit import default_timer as timer
 
 start = timer()
 
-conn = sqlite3.connect('/home/clayton/Documentos/input/exec_mineracao/.noworkflow/db.sqlite')
+# conn = sqlite3.connect('/home/clayton/Documentos/input/exec_mineracao/.noworkflow/db.sqlite')
+conn = sqlite3.connect('/home/clayton/Documentos/input/scriptsall/.noworkflow/db.sqlite')
 cursor = conn.cursor()
 
 cursor.execute("""select trial.id as trial_id, module.name as module_name from trial inner join dependency on 
@@ -54,13 +55,13 @@ for linha in result:
 #         if linha[0] == m+1:
 #             dataset[m].append(linha[1])
 
-for i in range(10,100):
-    dataset.append(['a','b','c'])
-    counterInt+=1
+# for i in range(10,100):
+#     dataset.append(['a','b','c'])
+#     counterInt+=1
 
 print(dataset)
 for m in range(counterInt):
-    print(len(dataset[m]))
+    # print(len(dataset[m]))
     print(dataset[m])
 
 oht = OnehotTransactions()
@@ -68,12 +69,12 @@ oht_ary = oht.fit(dataset).transform(dataset)
 df = pd.DataFrame(oht_ary, columns=oht.columns_)
 print(df)
 df.to_csv('example.csv')
-print(apriori(df, min_support=0.5))
-print(apriori(df, min_support=0.6, use_colnames=True))
-frequent_itemsets = apriori(df, min_support=0.6, use_colnames=True)
+# print(apriori(df, min_support=0.5))
+print(apriori(df, min_support=0.9, use_colnames=True))
+frequent_itemsets = apriori(df, min_support=0.9, use_colnames=True)
 frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
 print(frequent_itemsets)
-print(association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7))
+print(association_rules(frequent_itemsets, metric="confidence", min_threshold=0.9))
 
 end = timer()
 print(end - start, "seg.")
