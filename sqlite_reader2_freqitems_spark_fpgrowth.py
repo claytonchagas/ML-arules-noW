@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # print(df)
     # df.to_csv('example.csv')
 
-    fpGrowth = FPGrowth(itemsCol="items", minSupport=0.822, minConfidence=0.5)
+    fpGrowth = FPGrowth(itemsCol="items", minSupport=0.823, minConfidence=0.5)
 
     model = fpGrowth.fit(df)
     # show(x, y) -> x=
